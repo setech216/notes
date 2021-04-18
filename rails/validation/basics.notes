@@ -1,0 +1,3 @@
+
+validation calls before before_update
+so donot do validation in before save always do in validates

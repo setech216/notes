@@ -1,0 +1,8 @@
+
+Date.today VS Date.current:
+ Date.today gives date of machine or server
+ Date.current gives date in UTC timezone.
+
+DateTime.now VS DateTime.current:
+  DateTime.now gives date and time of machine or server
+  DateTime.current gives date and time in UTC timezone.

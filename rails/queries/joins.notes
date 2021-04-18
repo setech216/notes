@@ -1,0 +1,20 @@
+
+
+Inner JOIN:
+  Account.joins(:promo_code).where(promo_codes: {code: 'QB Pro Advisors'})
+  #SELECT "accounts"."id" FROM "accounts" INNER JOIN "promo_codes" ON "promo_codes"."id" = "accounts"."promo_code_id" WHERE "promo_codes"."code" = $1  [["code", "QB Pro Advisors"]]
+
+Left Outer JOIN:
+  Account.left_joins(:promo_code).where(promo_codes: {code: 'QB Pro Advisors'})
+  #SELECT "accounts"."id" FROM "accounts" LEFT JOIN "promo_codes" ON "promo_codes"."id" = "accounts"."promo_code_id" WHERE "promo_codes"."code" = $1  [["code", "QB Pro Advisors"]]
+
+Right Outer JOIN:
+  Account.joins('right outer join promo_codes on accounts.promo_code_id = promo_codes.id').active_trial_account.where('promo_codes.code != ?', 'QB Pro Advisors').pluck(:id)
+
+
+!ISSUES!
+=>left outer join skips entries in which left colom has nil, if we are applying condition over some colom of right table.(P.S  i know its agains concept of left join)
+  e,g it will not incoude acount records that has nil against promo_code_id. 
+    Account.left_joins(:promo_code).where(promo_codes: {code: 'QB Pro Advisors'})
+  to resolve this issuie, use bellow approach.
+    Account.left_joins(:promo_code).active_trial_account.where("promo_codes.code != ? OR promo_codes.code IS NULL", 'QB Pro Advisors')

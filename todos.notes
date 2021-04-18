@@ -1,0 +1,254 @@
+
+
+https://ui.dev/react-router-v4-pass-props-to-components/
+
+
+Account.last.update(trial_start_at: Account.last.trial_start_at - 31.days)
+Account.last.update(paid_through: Account.last.paid_through - 40.days)
+
+Account.last.update(active: false)
+
+
+to learn:
+    .nil?
+    .blank?
+    .try
+    safe navigation with & sign
+    polymorphic assosiation
+    update with hash
+    #self
+    #attr *
+    find vs find_by (find throw exception but find_by gives nil)
+    update vs update_all (all do no t execute call backs but update do),  all execute ones, but update do for every entry.
+    can child access parents attribute pointing to services.
+    saved_change_to_quickbooks_type? && quickbooks_type_before_last_save.present?
+    revert vs reset
+    annotate gem for attribute name
+    git restore --staged filename VS git rm --cached filename
+
+
+Queries:
+    Account.last.update(trial_start_at: Account.last.trial_start_at - 31.days)
+    Account.last.update(active: false)
+    User.find_by(email: 'sample@mailinator.com').update(admin_role: 1)
+
+inheritance(include, extends etc)
+attr/mounts/3rd party gems configs like devise
+conts
+enum
+associations
+validations
+callbacks
+scopes
+
+validates :name, format: { with: /\A[A-Z]+\z/ }
+
+ a = Account.includes(:promo_code).active_trial_account
+newArr=a.reject do |acc|
+    acc.promo_code&.code == "QB Pro Advisors"
+end
+
+
+ pg admin
+
+
+This will give cont of entires created by desktop:
+ acc.time_entries.left_joins([:customer, :vendor, :employee]).where("customers.list_id like '%-%' OR vendors.list_id like '%-%' OR employees.list_id like '%-%'").count
+    compare its count with count all entires of account
+
+
+    acc.vendors.where("list_id like '%-%'").update(hidden: true)
+
+
+
+SELECT date_trunc('month', ar.created_at) AS "month",
+      COUNT(a.id) AS "Accounts Deactivated"
+FROM audit_records ar
+LEFT JOIN accounts a ON a.id = ar.account_id
+WHERE (cast(a.total_revenue AS DECIMAL) > 0.0
+      OR a.cc_type IS NOT NULL)
+  AND a.test_account IS FALSE
+  AND ar.message LIKE '%deactivated account%'
+  AND ar.created_at >= NOW() - '1 YEAR'::INTERVAL
+GROUP BY date_trunc('month', ar.created_at)
+ORDER BY date_trunc('month', ar.created_at)
+
+
+
+SELECT date_trunc('month', acc.last_paid_at) AS "month",
+      COUNT(acc.id) AS "Paid Accounts"
+FROM accounts acc
+WHERE acc.last_paid_at IS NOT NULL
+GROUP BY date_trunc('month', acc.last_paid_at)
+ORDER BY date_trunc('month', acc.last_paid_at)
+
+
+SELECT date_trunc('month', bt.created_at) AS "month",
+      COUNT(bt.id) AS "Paid Accounts"
+FROM billing_transactions bt
+GROUP BY date_trunc('month', bt.created_at)
+ORDER BY date_trunc('month', bt.created_at)
+
+
+
+
+
+
+
+admin mail
+charge on spot.
+
+
+
+SELECT date_trunc('month', bt.created_at) AS "month",
+      SUM(bt.amount) AS "Renvenue"
+FROM billing_transactions bt
+WHERE bt.created_at >= NOW() - '3 YEAR'::INTERVAL
+GROUP BY date_trunc('month', bt.created_at)
+ORDER BY date_trunc('month', bt.created_at) DESC
+
+
+
+SELECT date_trunc('month', bt.created_at) AS "month",
+      a.name AS "account name",
+      SUM(bt.amount) AS "Renvenue"
+FROM billing_transactions bt
+LEFT JOIN accounts a ON a.id = bt.account_id
+WHERE bt.created_at >= NOW() - '3 YEAR'::INTERVAL
+GROUP BY a.name, date_trunc('month', bt.created_at)
+ORDER BY date_trunc('month', bt.created_at) DESC
+
+
+Topham Design, llc
+$136.00
+
+JPAnalytics LLC
+$284.00
+
+Mosaic Autism Services
+$920.00
+
+Construct-All Corporation
+$648.00
+
+BookkeepInc, a division of Salem Enterprises, LLC
+$72.00
+
+Method Construction Inc.
+$1,112.00
+
+
+SELECT
+      a.name AS "account name",
+
+      SUM(CASE WHEN EXTRACT(MONTH FROM bt.created_at) = 1 THEN bt.amount ELSE 0 END) AS [Jan],
+
+      SUM(bt.amount) AS "Renvenue"
+
+FROM billing_transactions bt,
+
+JOIN accounts a ON a.id = bt.account_id
+
+WHERE bt.created_at >= NOW() - '1 YEAR'::INTERVAL
+
+GROUP BY a.name
+
+
+
+
+SELECT
+      a.name AS "account name",
+
+      SUM(CASE WHEN date_part('month', bt.created_at) = 1 THEN bt.amount::numeric::int ELSE 0 END) AS "Jan",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 2 THEN bt.amount::numeric::int ELSE 0 END) AS "Feb",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 3 THEN bt.amount::numeric::int ELSE 0 END) AS "March",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 4 THEN bt.amount::numeric::int ELSE 0 END) AS "April",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 5 THEN bt.amount::numeric::int ELSE 0 END) AS "May",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 6 THEN bt.amount::numeric::int ELSE 0 END) AS "Jun",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 7 THEN bt.amount::numeric::int ELSE 0 END) AS "July",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 8 THEN bt.amount::numeric::int ELSE 0 END) AS "Aug",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 9 THEN bt.amount::numeric::int ELSE 0 END) AS "Sep",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 10 THEN bt.amount::numeric::int ELSE 0 END) AS "Oct",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 11 THEN bt.amount::numeric::int ELSE 0 END) AS "Nov",
+      SUM(CASE WHEN date_part('month', bt.created_at) = 12 THEN bt.amount::numeric::int ELSE 0 END) AS "Dec",
+
+      SUM(bt.amount) AS "Yearly"
+
+FROM billing_transactions bt
+
+JOIN accounts a ON a.id = bt.account_id
+
+WHERE bt.created_at >= NOW() - '1 YEAR'::INTERVAL
+
+GROUP BY a.name
+
+
+1412
+
+
+SELECT
+    a.id AS "Account id",
+    a.name AS "Account name",
+    usr.email AS "email",
+
+    SUM(CASE WHEN date_part('month', bt.created_at) = 12 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Dec-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 11 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Nov-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 10 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Oct-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 9 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Sep-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 8 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Aug-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 7 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "July-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 6 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Jun-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 5 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "May-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 4 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "April-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 3 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "March-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 2 AND date_part('year', bt.created_at) = 2020 THEN bt.amount::numeric::int ELSE 0 END) AS "Feb-20",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 1 AND date_part('year', bt.created_at) = 2020  THEN bt.amount::numeric::int ELSE 0 END) AS "Jan-20",
+
+    SUM(CASE WHEN date_part('month', bt.created_at) = 12 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Dec-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 11 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Nov-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 10 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Oct-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 9 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Sep-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 8 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Aug-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 7 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "July-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 6 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Jun-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 5 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "May-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 4 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "April-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 3 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "March-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 2 AND date_part('year', bt.created_at) = 2019 THEN bt.amount::numeric::int ELSE 0 END) AS "Feb-19",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 1 AND date_part('year', bt.created_at) = 2019  THEN bt.amount::numeric::int ELSE 0 END) AS "Jan-19",
+
+    SUM(CASE WHEN date_part('month', bt.created_at) = 12 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Dec-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 11 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Nov-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 10 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Oct-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 9 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Sep-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 8 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Aug-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 7 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "July-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 6 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Jun-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 5 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "May-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 4 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "April-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 3 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "March-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 2 AND date_part('year', bt.created_at) = 2018 THEN bt.amount::numeric::int ELSE 0 END) AS "Feb-18",
+    SUM(CASE WHEN date_part('month', bt.created_at) = 1 AND date_part('year', bt.created_at) = 2018  THEN bt.amount::numeric::int ELSE 0 END) AS "Jan-18"
+
+FROM  accounts a
+
+JOIN billing_transactions bt ON bt.account_id = a.id
+LEFT JOIN users usr ON usr.account_id = a.id
+
+
+WHERE date_part('year', bt.created_at) IN (2020, 2019, 2018) AND
+    usr.manage_account IS true
+
+GROUP BY a.id, usr.email
+
+5ymhxtlz0U7j for user p2830358
+
+
+
+5.times.each do |n|
+    User.create(email: "s#{n+1}@mailinator.com", last_name: 's', first_name: "#{n+1}", password: 'Password1',time_entry_reminder_frequency: 'time_entry_reminder_daily',time_entry_reminder_minimum_hours: 0)
+end
+
+
+sudo -u postgres psql
+

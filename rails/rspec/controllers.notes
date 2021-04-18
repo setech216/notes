@@ -1,0 +1,5 @@
+
+To check if job is equed or not:
+
+  expect(StopBroadcastJob).to receive(:perform_now).once.with(kinetic_session.broadcast.id)
+  join #this is making network call like subject(:join) { post 'api/my_url'}

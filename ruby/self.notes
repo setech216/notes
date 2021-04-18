@@ -1,0 +1,13 @@
+There are two use cases of 'self' keyword in ruby:
+
+1) One is for class methods like.
+    [ruby]
+        def self.start
+        end
+    [end]
+
+2) self also refers to current instace(object) of class.
+    we can call all instance methodes or attributes of current obj through self.
+
+    if we call attribute in class through self.attribute_name, then it is actually calling methode(getter)
+    without self it assessing directly

@@ -1,0 +1,26 @@
+
+ => date_part('month', bt.created_at)  // it will return digit of month e.g if date is 15-feb-20 it will give 2
+
+=> date_trunc('month', bt.created_at) // it will return something like
+
+
+
+2021-01-06 00:48	edit
+2021-01-06 00:58	sync
+
+!this!
+2021-01-05 22:38	add1
+2021-01-05 22:42	approve
+2021-01-05 22:58	sync
+2021-01-05 23:58	sync
+2021-01-06 00:48	edit4
+2021-01-06 00:58	sync
+
+
+
+
+2021-01-05 20:58	sync
+2021-01-05 21:58	sync
+2021-01-05 22:58	sync
+2021-01-05 23:58	sync
+2021-01-06 00:58	sync

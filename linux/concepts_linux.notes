@@ -1,0 +1,10 @@
+
+Crontab and Cron:
+    Cron is a job schedular to execute tasks. cron is the system process which will automatically perform tasks for you according to a set schedule. 
+
+    The schedule is called the crontab.The crontab is a list of commands that you want to run on a regular schedule, 
+
+    means cron tab contain shedule, when to execute which comand. and cron executes that command/job.
+    Crontab stands for “cron table"
+
+    crontab -l # it will list all jobs that are scheduled 

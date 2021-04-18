@@ -1,0 +1,23 @@
+!There are four types of variable in ruby!	
+    
+Local Variable:
+    starts with [a-z] or _
+    only have scope within block.
+
+Instance Variable:
+    starts with @
+    they belong to particular instance(object) of a class.
+
+Class Variable:
+    starts with @@
+    it is like static variable.
+    !need to be initializes before use, uninitialize will give error
+    shared by all instances.
+    shared by all desedentants of class.
+
+Global Variable:
+    starts with $
+    accessible everywhere in application.
+    not advised to use as it make program complex and ambiguous.
+
+

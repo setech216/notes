@@ -1,0 +1,12 @@
+
+All (.all methode):
+  check if array have only given value or follows give pattern or not
+
+  arr = [2,2,2]
+  arr.all?(2) #true
+  arr.all?(3) #false
+  arr.all? { |num| num>=15}  #false
+
+  arr = []
+  arr.all?(5) #true
+

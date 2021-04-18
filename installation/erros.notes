@@ -1,0 +1,5 @@
+
+
+npm install gives  error parsing json:
+
+    npm cache clean --force 

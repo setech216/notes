@@ -1,0 +1,16 @@
+describe '#stop' do
+  let(:tokbox_object) { Tokbox::SessionManager.new(session_id: meeting.id) }
+  let(:response) { OpenStruct.new(success: true) }
+
+  context 'when broadcast is master' do
+    before do
+      allow(Tokbox::SessionManager).to receive(:new).and_return(tokbox_object)
+      allow(tokbox_object).to receive(:stop_broadcast).and_return(response)
+      master_broadcast.stop!
+    end
+
+    it 'change status to stopped for all language streamers' do
+      expect(master_broadcast.status).to eq(2)
+    end
+  end
+end

@@ -1,0 +1,9 @@
+Install zsh:
+    sudo apt-get install zsh
+    whereis zsh #it will give path. copy first part of this, like this one '/usr/bin/zsh'. and past in bellow command
+    sudo usermod -s /usr/bin/zsh $(whoami)  #set zsh as default shell
+    restart system
+    echo $SHELL #it should give something like this '/usr/bin/zsh'
+
+Install oh-my-zsh:
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

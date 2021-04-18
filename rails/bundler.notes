@@ -1,0 +1,21 @@
+
+Version Specifiers:
+
+=> gem "gemname", "~> 4.0.3"
+  will tell bundler to load any gem that varies with the last (patch) number. So 4.0.x where x is 3 or greater.
+  for example,
+    ~> 2.0.3 is identical to >= 2.0.3 and < 2.1.
+    ~> 2.1 is identical to >= 2.1 and < 3.0.
+    ~> 2.2.beta will match prerelease versions like 2.2.beta.12.
+    ~> 0 is identical to >= 0.0 and < 1.0.
+
+=> gem "gemname", "4.0.1"
+  will only load 4.0.1.
+
+=> gem "gemname", ">= 4.0.1"
+  are self-explanatory.
+
+=> gem "gemname"
+  loads highest value that works (depending on what the needs of the rest of your gems in your Gemfile)
+  or will get whatever is specified in your Gemfile.lock, if you have one.
+  If we delete lock file, it will be loaded with highest vlue.

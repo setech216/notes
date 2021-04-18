@@ -1,0 +1,31 @@
+
+
+Sentry-Raven/Raven-Ruby:
+    gem "sentry-raven"
+
+    A client and integration layer for the Sentry error reporting API.
+    e.g,
+    [ruby]
+        rescue ActiveRecord::RecordNotFound => exception
+            # TODO: Add to message that the promo code doesn't exist anymore
+            Raven.capture_exception(exception, extra: {
+            account_id: account.id,
+            transaction_log: transaction_log,
+            description: description
+            })
+        end
+    [end]
+
+Whenever:
+    Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs.
+    we can shedule rake task, like when to execute then.
+    gem "whenever"
+    set :environment, 'development'
+
+devise_masquerade:
+    It's a utility library for enabling functionallity like login as button for admin (Impersonate user).
+    If you have multi users application and sometimes you want to test functionally using login of existing user without requesting the password,
+    define login as button with url helper and use it.
+
+Blueprinter:
+    Use blueprinter to serialize models as JSON

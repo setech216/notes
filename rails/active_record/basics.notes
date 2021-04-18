@@ -1,0 +1,13 @@
+
+delete_all vs destory_all:
+
+destroy / destroy_all: The associated objects are destroyed alongside this object by calling their destroy method.
+!initialize active record object, fires callbacks!
+
+delete / delete_all: All associated objects are destroyed immediately without calling their :destroy method.
+! donot initialize active record object,deleted record by calling sql query witch retrns no. of delted records ,donot fires callbacks!
+
+The easiest way to sum it up is to use delete if you want records to be deleted quickly.
+However, if you care about models callbacks, referential integrity,
+or validations (for example, setting a criteria to not destroy a record unless a certain condition is “true”),
+then use destroy.

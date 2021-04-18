@@ -1,0 +1,29 @@
+Following are types of attribute_accesoors in rails:
+
+=> attr_accessor:
+    it creates getter and setter both for an attribute.
+    e.g,  attr_accessor :user, :name, :city
+    [ruby]
+        class Test
+            attr_accessor :time, :name
+        end
+
+        Test.instance_methods(false) #[:time, :time=, name:, :name=]
+    [end]
+
+=> attr_reader:
+    creates getter. 
+    e.g, for above example [:time, name:] 
+
+=> attr_writer:
+    creates setter
+    e.g, for above example [:time=, name:=]
+
+Note:
+    for accessing something inside class use without @ sign but for assigning something use with @ sign, but make sure that att_accessor has been defined
+
+instance_methods(*args):
+Returns an array containing the names of the public and protected instance methods in the receiver. 
+For a module, these are the public and protected methods;
+For a class, they are the instance (not singleton) methods.
+If the optional parameter is false, the methods of any ancestors are not included.
