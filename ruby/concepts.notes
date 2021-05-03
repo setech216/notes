@@ -1,0 +1,17 @@
+
+Inject/reduce:
+  both are same
+
+  # prgram to find even numver with inject
+  arr = [1,2,3,4,5,6,7,9,10,20,45]
+  result = []
+
+  arr.inject(result) do |result , element|
+      result.push element if (element % 2) == 0
+      result
+  end
+
+  puts result
+
+  !note: here result is passed as by reference not by vale.
+

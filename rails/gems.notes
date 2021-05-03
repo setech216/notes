@@ -29,3 +29,15 @@ devise_masquerade:
 
 Blueprinter:
     Use blueprinter to serialize models as JSON
+
+Money-rails:
+    the money-rails gem for handling currency — it stores price as cents so you never have to worry about using floats.
+
+Dotenv-rails:
+    dotenv loads variables from a .env file into ENV when the environment is bootstrapped.dotenv is initialized in your Rails app
+    during the before_configuration callback, which is fired when the Application constant is defined in config/application.rb
+    with class Application < Rails::Application.
+
+Timecop:
+    A gem providing "time travel" and "time freezing" capabilities, making it dead simple to test time-dependent code.
+    It provides a unified method to mock Time.now, Date.today, and DateTime.now in a single call.

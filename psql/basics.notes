@@ -1,0 +1,4 @@
+
+Opening console for comand line:
+
+  sudo -u postgres psql

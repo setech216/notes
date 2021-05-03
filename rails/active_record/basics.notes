@@ -5,9 +5,15 @@ destroy / destroy_all: The associated objects are destroyed alongside this objec
 !initialize active record object, fires callbacks!
 
 delete / delete_all: All associated objects are destroyed immediately without calling their :destroy method.
-! donot initialize active record object,deleted record by calling sql query witch retrns no. of delted records ,donot fires callbacks!
+! donot initialize active record object,deleted record by calling sql query witch retrns no. of delted records ,do not fires callbacks!
 
 The easiest way to sum it up is to use delete if you want records to be deleted quickly.
 However, if you care about models callbacks, referential integrity,
 or validations (for example, setting a criteria to not destroy a record unless a certain condition is “true”),
 then use destroy.
+
+Creat Vs Create! :
+  create! raises an exception while create returns the object (unsaved object if it does not pass validations).
+
+Save Vs Save! :
+  save! raises an error while save returns true/false.

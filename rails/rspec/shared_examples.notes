@@ -2,26 +2,26 @@
 
 Validate response code with body:
 
-  RSpec.shared_examples 'Validate Response' do |code, example|
-    let(:subject_status) { subject.status }
-    let(:subject_body) { subject.body }
-    let(:response_body) { {} }
+    RSpec.shared_examples 'Validate Response' do |code, example|
+      let(:subject_status) { subject.status }
+      let(:subject_body) { subject.body }
+      let(:response_body) { {} }
 
-    it "returns #{code} status code" do
-      expect(subject_status).to eq(http_status(code))
+      it "returns #{code} status code" do
+        expect(subject_status).to eq(http_status(code))
+      end
+
+      it example.to_s do
+        expect(subject_body).to eq(response_body.to_json)
+      end
     end
 
-    it example.to_s do
-      expect(subject_body).to eq(response_body.to_json)
+    #usage
+
+    include_examples 'Validate Response', :created, 'contains adhoc tokens for different_users' do
+        let(:response_body) { %w[operator participant] }
     end
-  end
 
-  #usage
-
-  include_examples 'Validate Response', :created, 'contains adhoc tokens for different_users' do
-      let(:response_body) { %w[operator participant] }
-  end
-
-  include_examples 'Validate Response', :unprocessable_entity, 'returns error message: "Missing meeting settings"' do
-      let(:response_body) { { 'success' => false, 'errors' => ['Missing meeting settings'] } }
-  end
+    include_examples 'Validate Response', :unprocessable_entity, 'returns error message: "Missing meeting settings"' do
+        let(:response_body) { { 'success' => false, 'errors' => ['Missing meeting settings'] } }
+    end

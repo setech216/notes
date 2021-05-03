@@ -25,6 +25,7 @@ to learn:
     revert vs reset
     annotate gem for attribute name
     git restore --staged filename VS git rm --cached filename
+    git rebade -i
 
 
 Queries:
@@ -241,14 +242,126 @@ WHERE date_part('year', bt.created_at) IN (2020, 2019, 2018) AND
 
 GROUP BY a.id, usr.email
 
-5ymhxtlz0U7j for user p2830358
+
+RSpec/MultipleMemoizedHelpers
 
 
+ let(:organization) { create(:organization) }
+  let(:auth_config) { create(:auth_config, organization: organization) }
+  let(:organization_slug) { organization.slug }
+  let(:type) { auth_config.type }
 
-5.times.each do |n|
-    User.create(email: "s#{n+1}@mailinator.com", last_name: 's', first_name: "#{n+1}", password: 'Password1',time_entry_reminder_frequency: 'time_entry_reminder_daily',time_entry_reminder_minimum_hours: 0)
-end
+  describe '#saml_settings' do
+    subject(:saml_settings) { post "/api/v2/organizations/#{organization_slug}/#{type}/saml_settings", body.to_json }
 
+    context 'when slug is present' do
+      let(:body) do
+        {
+          slug: organization_slug
+        }
+      end
 
-sudo -u postgres psql
+      include_examples 'Validate Status Code', :ok
+    end
+
+    context 'when organization is blank' do
+    let(:organization_slug) { '0' }
+
+      let(:body) do
+        {
+          slug: ''
+        }
+      end
+
+      include_examples 'Validate Status Code', :unauthorized, 'returns unauthorized error' do
+        let(:response_body) do
+          {
+            'success': false,
+            'status': http_status(:unauthorized),
+            'errors': [I18n.t('failure')]
+          }
+        end
+      end
+    end
+
+    context 'when header is invalid' do
+      before do
+        header 'WHO_M_I', 'kudowsda'
+      end
+
+      context 'when slug is present' do
+      let(:body) do
+        {
+          slug: organization_slug
+        }
+      end
+
+      include_examples 'Validate Status Code', :unauthorized
+    end
+    end
+  end
+
+  describe '#init' do
+    subject(:init) { post "/api/v2/organizations/#{organization_slug}/#{type}/init", body.to_json }
+
+    context 'when slug is present' do
+      let(:body) do
+        {
+          slug: organization_slug,
+          type: type
+        }
+      end
+
+      include_examples 'Validate Status Code', :unprocessable_entity, 'failed' do
+        let(:response_body) do
+          {
+            'success': false
+          }
+        end
+      end
+    end
+
+    context 'when slug and organizaition is empty' do
+      let(:organization_slug) { '0' }
+      let(:body) do
+        {
+          slug: ''
+        }
+      end
+
+      include_examples 'Validate Status Code', :unauthorized, 'failed' do
+        let(:response_body) do
+          {
+            'success': false,
+            'errors': [I18n.t('failure')]
+          }
+        end
+      end
+    end
+  end
+
+  describe '#saml_authenticate' do
+    subject(:saml_authenticate) { post "/api/v2/organizations/#{organization_slug}/#{type}/saml_authenticate", body.to_json }
+
+    context 'when slug is present' do
+      let(:body) do
+        {
+          slug: organization_slug,
+          login: {
+              email: 'test@kudoway.com',
+              password: password
+            }
+        }
+      end
+
+      include_examples 'Validate Status Code', :unauthorized, 'failed to authenticate' do
+        let(:response_body) do
+          {
+            'success': false,
+            'errors': [I18n.t('failure')]
+          }
+        end
+      end
+    end
+  end
 

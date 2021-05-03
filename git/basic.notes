@@ -5,3 +5,23 @@ Staging area:
 
   => Note:
     index, the staging area, or the cache, are same things
+
+
+Rebase onto:
+  !git rebase --onto newBase oldBase feature/branch
+  #this is used if want to change base of branch
+  suppose a scenario.
+
+  (commit 1) - master
+                \-- (commit 2) - (commit 3) - demo
+                                                \-- (commit 4) - (commit 5) - PRO
+
+  and we want to manke this,
+
+  (commit 1) - master
+                |-- (commit 2) - (commit 3) - demo
+                \-- (commit 4) - (commit 5) - PRO
+
+  then do,
+
+  git rebase --onto master demo PRO

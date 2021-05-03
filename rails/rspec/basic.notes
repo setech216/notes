@@ -1,0 +1,15 @@
+
+
+Describe vs context:
+  According to the rspec source code, “context” is just a alias method of “describe”, meaning that
+  there is no functional difference between these two methods. However, there is a contextual difference
+  that’ll help to make your tests more understandable by using both of them.
+  The purpose of “describe” is to wrap a set of tests against one functionality
+  while “context” is to wrap a set of tests against one functionality under the same state. Here’s an example
+
+
+current_user_as(user):
+  def current_user_as(user)
+    allow(described_class).to receive(:new).and_return(my_instance)
+    allow(my_instance).to receive(:current_user).and_return(user)
+  end
