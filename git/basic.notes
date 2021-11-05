@@ -25,3 +25,7 @@ Rebase onto:
   then do,
 
   git rebase --onto master demo PRO
+
+Still Using old user-name Issue:
+
+git config --local credential.helper ""
