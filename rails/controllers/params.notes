@@ -1,0 +1,9 @@
+
+Params is like a hash a key can be access by both string and symbol.
+
+to_h:
+  will only return hash with permitted keys
+
+to_unsafe_h:
+  will return hash with both permited and unpermitted key
+

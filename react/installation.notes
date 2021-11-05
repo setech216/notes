@@ -1,0 +1,7 @@
+Mac:
+
+-> Install Node by downloading pkg from official site.
+-> check node -v and npm -v , they should work
+-> install create-react-app by,  npm install -g create-react-app
+   If this giving access denied error . use this, sudo install -g create-react-app\
+-> create new app by, create-react-app test-react-app

@@ -53,15 +53,6 @@ end
  pg admin
 
 
-This will give cont of entires created by desktop:
- acc.time_entries.left_joins([:customer, :vendor, :employee]).where("customers.list_id like '%-%' OR vendors.list_id like '%-%' OR employees.list_id like '%-%'").count
-    compare its count with count all entires of account
-
-
-    acc.vendors.where("list_id like '%-%'").update(hidden: true)
-
-
-
 SELECT date_trunc('month', ar.created_at) AS "month",
       COUNT(a.id) AS "Accounts Deactivated"
 FROM audit_records ar
@@ -92,15 +83,6 @@ ORDER BY date_trunc('month', bt.created_at)
 
 
 
-
-
-
-
-admin mail
-charge on spot.
-
-
-
 SELECT date_trunc('month', bt.created_at) AS "month",
       SUM(bt.amount) AS "Renvenue"
 FROM billing_transactions bt
@@ -119,24 +101,6 @@ WHERE bt.created_at >= NOW() - '3 YEAR'::INTERVAL
 GROUP BY a.name, date_trunc('month', bt.created_at)
 ORDER BY date_trunc('month', bt.created_at) DESC
 
-
-Topham Design, llc
-$136.00
-
-JPAnalytics LLC
-$284.00
-
-Mosaic Autism Services
-$920.00
-
-Construct-All Corporation
-$648.00
-
-BookkeepInc, a division of Salem Enterprises, LLC
-$72.00
-
-Method Construction Inc.
-$1,112.00
 
 
 SELECT
@@ -183,8 +147,6 @@ WHERE bt.created_at >= NOW() - '1 YEAR'::INTERVAL
 
 GROUP BY a.name
 
-
-1412
 
 
 SELECT
@@ -241,127 +203,4 @@ WHERE date_part('year', bt.created_at) IN (2020, 2019, 2018) AND
     usr.manage_account IS true
 
 GROUP BY a.id, usr.email
-
-
-RSpec/MultipleMemoizedHelpers
-
-
- let(:organization) { create(:organization) }
-  let(:auth_config) { create(:auth_config, organization: organization) }
-  let(:organization_slug) { organization.slug }
-  let(:type) { auth_config.type }
-
-  describe '#saml_settings' do
-    subject(:saml_settings) { post "/api/v2/organizations/#{organization_slug}/#{type}/saml_settings", body.to_json }
-
-    context 'when slug is present' do
-      let(:body) do
-        {
-          slug: organization_slug
-        }
-      end
-
-      include_examples 'Validate Status Code', :ok
-    end
-
-    context 'when organization is blank' do
-    let(:organization_slug) { '0' }
-
-      let(:body) do
-        {
-          slug: ''
-        }
-      end
-
-      include_examples 'Validate Status Code', :unauthorized, 'returns unauthorized error' do
-        let(:response_body) do
-          {
-            'success': false,
-            'status': http_status(:unauthorized),
-            'errors': [I18n.t('failure')]
-          }
-        end
-      end
-    end
-
-    context 'when header is invalid' do
-      before do
-        header 'WHO_M_I', 'kudowsda'
-      end
-
-      context 'when slug is present' do
-      let(:body) do
-        {
-          slug: organization_slug
-        }
-      end
-
-      include_examples 'Validate Status Code', :unauthorized
-    end
-    end
-  end
-
-  describe '#init' do
-    subject(:init) { post "/api/v2/organizations/#{organization_slug}/#{type}/init", body.to_json }
-
-    context 'when slug is present' do
-      let(:body) do
-        {
-          slug: organization_slug,
-          type: type
-        }
-      end
-
-      include_examples 'Validate Status Code', :unprocessable_entity, 'failed' do
-        let(:response_body) do
-          {
-            'success': false
-          }
-        end
-      end
-    end
-
-    context 'when slug and organizaition is empty' do
-      let(:organization_slug) { '0' }
-      let(:body) do
-        {
-          slug: ''
-        }
-      end
-
-      include_examples 'Validate Status Code', :unauthorized, 'failed' do
-        let(:response_body) do
-          {
-            'success': false,
-            'errors': [I18n.t('failure')]
-          }
-        end
-      end
-    end
-  end
-
-  describe '#saml_authenticate' do
-    subject(:saml_authenticate) { post "/api/v2/organizations/#{organization_slug}/#{type}/saml_authenticate", body.to_json }
-
-    context 'when slug is present' do
-      let(:body) do
-        {
-          slug: organization_slug,
-          login: {
-              email: 'test@kudoway.com',
-              password: password
-            }
-        }
-      end
-
-      include_examples 'Validate Status Code', :unauthorized, 'failed to authenticate' do
-        let(:response_body) do
-          {
-            'success': false,
-            'errors': [I18n.t('failure')]
-          }
-        end
-      end
-    end
-  end
 
